@@ -1,16 +1,19 @@
 {
-  "name": "auth-service",
-  "version": "1.0.0",
-  "description": "auth services",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "umesh Kumar <umesh@gmail.com>",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/node": "^20.6.0",
-    "typescript": "^5.2.2"
-  }
+    "name": "auth-service",
+    "version": "1.0.0",
+    "description": "auth services",
+    "main": "index.js",
+    "scripts": {
+        "dev": "node src/server.js",
+        "format:check": "prettier . --check",
+        "format:fix": "npx prettier . --write"
+    },
+    "keywords": [],
+    "author": "umesh Kumar <umesh@gmail.com>",
+    "license": "ISC",
+    "devDependencies": {
+        "@types/node": "^20.6.0",
+        "prettier": "3.0.3",
+        "typescript": "^5.2.2"
+    }
 }
