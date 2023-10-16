@@ -15,16 +15,9 @@ interface RegisterUserData extends Request {
 export class AuthController {
     async register(req: RegisterUserData, res: Response) {
         const { firstName, lastName, email, password } = req.body;
-        await AppDataSource.initialize();
-
-        const user = new User();
-        user.firstName = firstName;
-        user.lastName = lastName;
-        user.email = email;
-        user.password = password;
         const userRepository = AppDataSource.getRepository(User);
 
-        await userRepository.save(user);
+        await userRepository.save({ firstName, lastName, email, password });
 
         res.status(201).json({ success: 'data inserted...' });
     }
