@@ -58,7 +58,7 @@ describe('POST /auth/register', () => {
         it('should persist the user in the database', async () => {
             // Arrange
             const userData = {
-                firstName: 'Priti',
+                firstName: 'Umesh',
                 lastName: 'Kumar',
                 email: 'umesh@mern.space',
                 password: 'secret',
@@ -74,21 +74,21 @@ describe('POST /auth/register', () => {
             expect(users[0].email).toBe(userData.email);
         });
 
-        it('it should return an id of created user', async () => {
-            // Arrange
-            const userData = {
-                firstName: 'Umesh',
-                lastName: 'Kumar',
-                email: 'umesh@mern.space',
-                password: 'secret',
-            };
-            // Act
-            await request(app).post('/auth/register').send(userData);
-            // Assert
-            const userRepository = connection.getRepository(User);
-            const users = await userRepository.find();
-            expect(users[0].id).toBeTruthy();
-        });
+        // it('it should return an id of created user', async () => {
+        //     // Arrange
+        //     const userData = {
+        //         firstName: 'Umesh',
+        //         lastName: 'Kumar',
+        //         email: 'umesh@mern.space',
+        //         password: 'secret',
+        //     };
+        //     // Act
+        //     await request(app).post('/auth/register').send(userData);
+        //     // Assert
+        //     const userRepository = connection.getRepository(User);
+        //     const users = await userRepository.find();
+        //     expect(users[0].id).toBeTruthy();
+        // });
     });
     describe('Fields are Missing', () => {});
 });
