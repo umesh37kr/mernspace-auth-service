@@ -91,7 +91,7 @@ describe('POST /auth/register', () => {
         //     const users = await userRepository.find();
         //     expect(users[0].id).toBeTruthy();
         // });
-        it('role should be customer', async () => {
+        it('shoulda a customer role', async () => {
             // Arrange
             const userData = {
                 firstName: 'Umesh',
@@ -106,6 +106,24 @@ describe('POST /auth/register', () => {
             const users = await userRepository.find();
             expect(users[0]).toHaveProperty('role');
             expect(users[0].role).toBe(Roles.CUSTOMER);
+        });
+
+        it('should store the hashed password in the database', async () => {
+            // Arrange
+            const userData = {
+                firstName: 'Umesh',
+                lastName: 'Kumar',
+                email: 'umesh@mernspace.com',
+                password: 'secret',
+            };
+            // Act
+            await request(app).post('/auth/register').send(userData);
+            // assert
+            const userRepository = connection.getRepository(User);
+            const users = await userRepository.find();
+            expect(users[0].password).not.toBe(userData.password);
+            expect(users[0].password).toHaveLength(60);
+            expect(users[0].password).toMatch(/^\$2b\$\d+\$/);
         });
     });
     describe('Fields are Missing', () => {});
