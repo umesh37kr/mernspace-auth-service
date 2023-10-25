@@ -125,6 +125,27 @@ describe('POST /auth/register', () => {
             expect(users[0].password).toHaveLength(60);
             expect(users[0].password).toMatch(/^\$2b\$\d+\$/);
         });
+
+        it('should return 400 staus if email is already exist', async () => {
+            // Arrange
+            const userData = {
+                firstName: 'umesh',
+                lastName: 'kumar',
+                email: 'umesh@mernspace.com',
+                password: 'secret',
+            };
+            const userRepository = connection.getRepository(User);
+            await userRepository.save({ ...userData, role: Roles.CUSTOMER });
+            // act
+            const response = await request(app)
+                .post('/auth/register')
+                .send(userData);
+            const users = await userRepository.find();
+            // assert
+            expect(response.status).toBe(400);
+            expect(users).toHaveLength(1);
+            expect;
+        });
     });
     describe('Fields are Missing', () => {});
 });
