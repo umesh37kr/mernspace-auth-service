@@ -76,21 +76,26 @@ describe('POST /auth/register', () => {
             expect(users[0].email).toBe(userData.email);
         });
 
-        // it('it should return an id of created user', async () => {
-        //     // Arrange
-        //     const userData = {
-        //         firstName: 'Umesh',
-        //         lastName: 'Kumar',
-        //         email: 'umesh@mern.space',
-        //         password: 'secret',
-        //     };
-        //     // Act
-        //     await request(app).post('/auth/register').send(userData);
-        //     // Assert
-        //     const userRepository = connection.getRepository(User);
-        //     const users = await userRepository.find();
-        //     expect(users[0].id).toBeTruthy();
-        // });
+        it('it should return an id of created user', async () => {
+            // Arrange
+            const userData = {
+                firstName: 'Umesh',
+                lastName: 'Kumar',
+                email: 'umesh@mern.space',
+                password: 'secret',
+            };
+            // Act
+            const response = await request(app)
+                .post('/auth/register')
+                .send(userData);
+            // Assert
+            expect(response.body).toHaveProperty('id');
+            const repository = connection.getRepository(User);
+            const users = await repository.find();
+            expect((response.body as Record<string, string>).id).toBe(
+                users[0].id,
+            );
+        });
         it('shoulda a customer role', async () => {
             // Arrange
             const userData = {
@@ -166,6 +171,51 @@ describe('POST /auth/register', () => {
             const users = await userRepository.find();
             expect(users).toHaveLength(0);
         });
+        it('should return 400 status code if firstName is missing', async () => {
+            // Arrange
+            const userData = {
+                firstName: '',
+                lastName: 'kumar',
+                email: 'umesh@mernspace.com',
+                password: 'secret',
+            };
+            // Act
+            const response = await request(app)
+                .post('/auth/register')
+                .send(userData);
+            // Assert
+            expect(response.statusCode).toBe(400);
+        });
+        it('should return 400 status code if lastName is missing', async () => {
+            // Arrange
+            const userData = {
+                firstName: 'umesh',
+                lastName: '',
+                email: 'umesh@mernspace.com',
+                password: 'secret',
+            };
+            // Act
+            const response = await request(app)
+                .post('/auth/register')
+                .send(userData);
+            // Assert
+            expect(response.statusCode).toBe(400);
+        });
+        it('should return 400 status code if password is missing', async () => {
+            // Arrange
+            const userData = {
+                firstName: 'umesh',
+                lastName: 'kumar',
+                email: 'umesh@mernspace.com',
+                password: '',
+            };
+            // Act
+            const response = await request(app)
+                .post('/auth/register')
+                .send(userData);
+            // Assert
+            expect(response.statusCode).toBe(400);
+        });
     });
     describe('fields are not in proper format', () => {
         it('should the trim email field', async () => {
@@ -183,6 +233,55 @@ describe('POST /auth/register', () => {
             const user = users[0];
             // Assert
             expect(user.email).toBe('umesh@mernspace.com');
+        });
+        it('should return 400 status code if email is not a valid email', async () => {
+            // Arrange
+            const userData = {
+                firstName: 'umesh',
+                lastName: 'kumar',
+                email: 'umesh.kumar',
+                password: 'secret',
+            };
+            // Act
+            const response = await request(app)
+                .post('/auth/register')
+                .send(userData);
+            // Assert
+            expect(response.statusCode).toBe(400);
+        });
+        it.skip('should return 400 status code if password length is less than 8 chars', async () => {
+            // Arrange
+            const userData = {
+                firstName: 'umesh',
+                lastName: 'kumar',
+                email: 'umesh@merspace.com',
+                password: 'pass',
+            };
+            // Act
+            const response = await request(app)
+                .post('/auth/register')
+                .send(userData);
+            // Assert
+            expect(response.statusCode).toBe(400);
+        });
+        it('should return an array of error message if email is missing', async () => {
+            // Arrange
+            const userData = {
+                firstName: 'Rakesh',
+                lastName: 'K',
+                email: '',
+                password: 'password',
+            };
+            // Act
+            const response = await request(app)
+                .post('/auth/register')
+                .send(userData);
+
+            // Assert
+            expect(response.body).toHaveProperty('errors');
+            expect(
+                (response.body as Record<string, string>).errors.length,
+            ).toBeGreaterThan(0);
         });
     });
 });
