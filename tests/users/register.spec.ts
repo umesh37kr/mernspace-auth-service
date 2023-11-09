@@ -4,6 +4,7 @@ import { AppDataSource } from '../../src/config/data-source';
 import { DataSource } from 'typeorm';
 import { User } from '../../src/entity/User';
 import { Roles } from '../../src/constants';
+import { isJwt } from '../utils';
 
 describe('POST /auth/register', () => {
     let connection: DataSource;
@@ -150,6 +151,39 @@ describe('POST /auth/register', () => {
             expect(response.status).toBe(400);
             expect(users).toHaveLength(1);
             expect;
+        });
+        it('should return the access token and refresh token inside a cookie', async () => {
+            // Arrange
+            const userData = {
+                firstName: 'Umesh',
+                lastName: 'Kumar',
+                email: 'umesh@mernspace.com',
+                password: 'secret',
+            };
+            // Act
+            const response = await request(app)
+                .post('/auth/register')
+                .send(userData);
+
+            interface Headers {
+                'set-cookie': string[];
+            }
+            // Assert
+            let accessToken = null;
+            let refreshToken = null;
+            const cookies = (response.headers as Headers)['set-cookie'] || [];
+            cookies.forEach((cookie) => {
+                if (cookie.startsWith('accessToken=')) {
+                    accessToken = cookie.split(';')[0].split('=')[1];
+                }
+
+                if (cookie.startsWith('accessToken=')) {
+                    refreshToken = cookie.split(';')[0].split('=')[1];
+                }
+            });
+            expect(accessToken).not.toBeNull();
+            expect(refreshToken).not.toBeNull();
+            expect(isJwt(accessToken)).toBeTruthy();
         });
     });
     describe('Fields are Missing', () => {

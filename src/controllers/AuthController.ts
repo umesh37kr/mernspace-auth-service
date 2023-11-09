@@ -30,6 +30,22 @@ export class AuthController {
                 password,
             });
             this.logger.info('User has been registered', { id: user.id });
+
+            const accessToken = 'lfjksdsdghdfufsi';
+            const refreshToken = 'lkfjweoiuroweureweuiorfw';
+            res.cookie('accessToken', accessToken, {
+                domain: 'localhost',
+                sameSite: 'strict',
+                maxAge: 1000 * 60 * 60, // 1h
+                httpOnly: true, // Very important
+            });
+
+            res.cookie('refreshToken', refreshToken, {
+                domain: 'localhost',
+                sameSite: 'strict',
+                maxAge: 1000 * 60 * 60 * 24 * 365, //1yrs
+                httpOnly: true, //very important
+            });
             res.status(201).json({ id: user.id });
         } catch (error) {
             next(error);
