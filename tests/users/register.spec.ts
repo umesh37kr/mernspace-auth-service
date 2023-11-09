@@ -184,6 +184,7 @@ describe('POST /auth/register', () => {
             expect(accessToken).not.toBeNull();
             expect(refreshToken).not.toBeNull();
             expect(isJwt(accessToken)).toBeTruthy();
+            expect(isJwt(refreshToken)).toBeTruthy();
         });
     });
     describe('Fields are Missing', () => {
