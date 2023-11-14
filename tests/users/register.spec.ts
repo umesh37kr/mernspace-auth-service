@@ -177,7 +177,7 @@ describe('POST /auth/register', () => {
                     accessToken = cookie.split(';')[0].split('=')[1];
                 }
 
-                if (cookie.startsWith('accessToken=')) {
+                if (cookie.startsWith('refreshToken=')) {
                     refreshToken = cookie.split(';')[0].split('=')[1];
                 }
             });
