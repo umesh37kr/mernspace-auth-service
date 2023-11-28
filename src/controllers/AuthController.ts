@@ -65,4 +65,17 @@ export class AuthController {
             return;
         }
     }
+
+    login(req: RegisterUserData, res: Response, next: NextFunction) {
+        // field validations
+        const result = validationResult(req);
+        if (!result.isEmpty()) {
+            return res.status(400).json({ errors: result.array() });
+        }
+        try {
+            res.status(201).json({ id: 'user.id' });
+        } catch (error) {
+            next(error);
+        }
+    }
 }

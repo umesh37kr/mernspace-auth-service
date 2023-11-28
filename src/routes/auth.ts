@@ -5,6 +5,7 @@ import { AppDataSource } from '../config/data-source';
 import { User } from '../entity/User';
 import logger from '../config/logger';
 import registerValidators from '../validators/register-validators';
+import loginValidators from '../validators/login-validators';
 import { TokenService } from '../services/TokenService';
 import { RefreshToken } from '../entity/RefreshToken';
 const router = express.Router();
@@ -22,4 +23,10 @@ router.post(
         authController.register(req, res, next),
 );
 
+router.post(
+    '/login',
+    loginValidators,
+    (req: Request, res: Response, next: NextFunction) =>
+        authController.login(req, res, next),
+);
 export default router;
