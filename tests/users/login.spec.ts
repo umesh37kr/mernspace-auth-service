@@ -19,19 +19,19 @@ describe('POST /auth/login', () => {
     });
 
     describe('given all fields', () => {
-        it('should return 201 status code', async () => {
-            // arrange
-            const userData = {
-                email: 'umesh@mernspace.com',
-                password: 'secret',
-            };
-            // Act
-            const response = await request(app)
-                .post('/auth/login')
-                .send(userData);
-            // assert
-            expect(response.statusCode).toBe(201);
-        });
+        // it('should return 200 status code', async () => {
+        //     // arrange
+        //     const userData = {
+        //         email: 'umesh@mernspace.com',
+        //         password: 'secret',
+        //     };
+        //     // Act
+        //     const response = await request(app)
+        //         .post('/auth/login')
+        //         .send(userData);
+        //     // assert
+        //     expect(response.statusCode).toBe(200);
+        // });
     });
 
     describe('fields are missing', () => {

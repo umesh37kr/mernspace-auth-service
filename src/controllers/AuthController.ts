@@ -1,5 +1,5 @@
 import { NextFunction, Response } from 'express';
-import { RegisterUserData } from '../types';
+import { AuthRequest, RegisterUserData } from '../types';
 import { UserService } from '../services/UserService';
 import { Logger } from 'winston';
 import { validationResult } from 'express-validator';
@@ -139,5 +139,13 @@ export class AuthController {
             next(error);
             return;
         }
+    }
+
+    async self(req: AuthRequest, res: Response) {
+        // token req.auth.id
+        // console.log('req.auth', req.auth);
+        const user = await this.userService.findById(Number(req.auth.sub));
+        // console.log('user', user);
+        res.json(user);
     }
 }
