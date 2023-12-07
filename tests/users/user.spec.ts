@@ -91,10 +91,28 @@ describe('GET /auth/self', () => {
                 .get('/auth/self')
                 .set('Cookie', [`accessToken=${accessToken}`])
                 .send();
-            // validate the test
+            // Assert
             expect(response.body as Record<string, string>).not.toHaveProperty(
                 'password',
             );
+        });
+
+        it('should return unauthorize 401 status code if token not found', async () => {
+            // register
+            const userData = {
+                firstName: 'umesh',
+                lastName: 'kumar',
+                email: 'umeshkumar@mernspace.com',
+                password: 'secretpassword',
+            };
+            const userRepository = connection.getRepository(User);
+            await userRepository.save({
+                ...userData,
+                role: Roles.CUSTOMER,
+            });
+            const response = await request(app).get('/auth/self').send();
+            //   assert
+            expect(response.statusCode).toBe(401);
         });
     });
 });
