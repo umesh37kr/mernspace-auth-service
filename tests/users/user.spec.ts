@@ -58,11 +58,10 @@ describe('GET /auth/self', () => {
                 sub: String(data.id),
                 role: data.role,
             });
-
             // Add token to cookie
             const response = await request(app)
                 .get('/auth/self')
-                .set('Cookie', [`accessToken: ${accessToken}`])
+                .set('Cookie', [`accessToken=${accessToken}`])
                 .send();
 
             // check if user id is matches with registered user
