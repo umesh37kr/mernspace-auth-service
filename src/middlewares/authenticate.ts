@@ -1,7 +1,7 @@
 import { expressjwt, GetVerificationKey } from 'express-jwt';
+import { Request } from 'express';
 import jwksClient from 'jwks-rsa';
 import { Config } from '../config';
-import { Request } from 'express';
 import { AuthCookie } from '../types';
 
 export default expressjwt({
@@ -13,8 +13,9 @@ export default expressjwt({
     algorithms: ['RS256'],
     getToken(req: Request) {
         const authHeader = req.headers.authorization;
-        // Bearer jdgksehsjklghsdgmjsdlkcr90wcrkwlefnl
-        if (authHeader && authHeader.split(' ')[1] != 'undefined') {
+
+        // Bearer eyjllsdjfljlasdjfljlsadjfljlsdf
+        if (authHeader && authHeader.split(' ')[1] !== 'undefined') {
             const token = authHeader.split(' ')[1];
             if (token) {
                 return token;
