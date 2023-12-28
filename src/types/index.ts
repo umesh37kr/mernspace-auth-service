@@ -34,7 +34,7 @@ export interface ITenant {
     address: string;
 }
 
-export interface createTenantData extends Request {
+export interface CreateTenantRequest extends Request {
     body: ITenant;
 }
 
