@@ -151,7 +151,6 @@ describe('POST /auth/register', () => {
             // assert
             expect(response.status).toBe(400);
             expect(users).toHaveLength(1);
-            expect;
         });
         it('should return the access token and refresh token inside a cookie', async () => {
             // Arrange
