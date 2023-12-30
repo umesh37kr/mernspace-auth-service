@@ -1,5 +1,10 @@
 import 'reflect-metadata';
-import express, { Request, Response, NextFunction } from 'express';
+import express, {
+    Request,
+    Response,
+    NextFunction,
+    RequestHandler,
+} from 'express';
 import logger from './config/logger';
 import { HttpError } from 'http-errors';
 import authRouter from './routes/auth';
@@ -11,9 +16,9 @@ const app = express();
 app.use(express.static('public'));
 app.use(cookieParser());
 app.use(express.json());
-app.get('/', async (req, res) => {
+app.get('/', (async (req, res) => {
     res.send('app is working ..');
-});
+}) as RequestHandler);
 
 app.use('/auth', authRouter);
 app.use('/tenants', tenantsRouter);
