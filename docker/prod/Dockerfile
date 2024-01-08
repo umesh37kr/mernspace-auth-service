@@ -25,5 +25,5 @@ COPY --from=builder /app/dist ./
 
 EXPOSE 5500
 
-CMD [ "npm", "src/server.js" ]
+CMD [ "node", "src/server.js" ]
 
