@@ -1,6 +1,7 @@
 import express, { NextFunction, RequestHandler, Response } from 'express';
 import authenticate from '../middlewares/authenticate';
 import { canAccess } from '../middlewares/canAccess';
+import { Request } from 'express-jwt';
 import { Roles } from '../constants';
 import { UserController } from '../controllers/UserController';
 import { UserService } from '../services/UserService';
@@ -9,6 +10,7 @@ import { User } from '../entity/User';
 import updateUserValidator from '../validators/update-user-validator';
 import { UpdateUserRequest } from '../types';
 import logger from '../config/logger';
+import listUsersValidator from '../validators/list-users-validator';
 
 const router = express.Router();
 const userRepository = AppDataSource.getRepository(User);
@@ -36,7 +38,8 @@ router.get(
     '/',
     authenticate as RequestHandler,
     canAccess([Roles.ADMIN]),
-    (req, res, next) =>
+    listUsersValidator,
+    (req: Request, res: Response, next: NextFunction) =>
         userController.getAll(req, res, next) as unknown as RequestHandler,
 );
 
