@@ -80,7 +80,7 @@ export class UserController {
                 currentPage: validatedQuery.currentPage as number,
                 perPage: validatedQuery.perPage as number,
                 total: count,
-                users: users,
+                data: users,
             });
         } catch (err) {
             next(err);
