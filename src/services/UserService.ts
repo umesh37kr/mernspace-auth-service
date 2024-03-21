@@ -103,6 +103,7 @@ export class UserService {
             queryBuilder.andWhere('role= :role', { role: validatedQuery.role });
         }
         const result = await queryBuilder
+            .leftJoinAndSelect('user.tenant', 'tenant')
             .skip((validatedQuery.currentPage - 1) * validatedQuery.perPage)
             .take(validatedQuery.perPage)
             .orderBy('user.id', 'DESC')
