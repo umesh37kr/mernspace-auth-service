@@ -8,9 +8,10 @@ import { UserService } from '../services/UserService';
 import { AppDataSource } from '../config/data-source';
 import { User } from '../entity/User';
 import updateUserValidator from '../validators/update-user-validator';
-import { UpdateUserRequest } from '../types';
+import { CreateUserRequest, UpdateUserRequest } from '../types';
 import logger from '../config/logger';
 import listUsersValidator from '../validators/list-users-validator';
+import createUserValidator from '../validators/create-user-validator';
 
 const router = express.Router();
 const userRepository = AppDataSource.getRepository(User);
@@ -21,7 +22,8 @@ router.post(
     '/',
     authenticate as RequestHandler,
     canAccess([Roles.ADMIN]),
-    (req, res, next) =>
+    createUserValidator,
+    (req: CreateUserRequest, res: Response, next: NextFunction) =>
         userController.create(req, res, next) as unknown as RequestHandler,
 );
 
