@@ -77,7 +77,7 @@ export class UserService {
                 lastName,
                 role,
                 email,
-                tenant: tenantId ? { id: tenantId } : undefined,
+                tenant: tenantId ? { id: tenantId } : null,
             });
         } catch (err) {
             const error = createHttpError(
